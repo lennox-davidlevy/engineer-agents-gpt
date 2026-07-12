@@ -3,5 +3,13 @@
   "default_agent": "engineer",
   "permission": {
     "websearch": "allow"
+  },
+  "agent": {
+    "build": {
+      "disable": true
+    },
+    "plan": {
+      "disable": true
+    }
   }
 }
