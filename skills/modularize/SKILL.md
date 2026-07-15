@@ -1,7 +1,6 @@
 ---
 name: modularize
 description: Split a monolithic file into concept-sized modules in separate files — mapped, planned, then moved mechanically with no rewrites.
-disable-model-invocation: true
 ---
 
 # Modularize

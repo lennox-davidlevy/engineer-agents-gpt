@@ -12,7 +12,15 @@ permission:
   list: allow
   lsp: allow
   edit: allow
-  bash: allow
+  bash:
+    "*": allow
+    "rm -rf*": deny
+    "git commit*": deny
+    "git push*": deny
+    "git reset --hard*": deny
+    "git clean*": deny
+    "gh pr create*": deny
+    "gh pr merge*": deny
   external_directory: ask
   webfetch: allow
   websearch: allow

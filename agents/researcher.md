@@ -10,7 +10,7 @@ permission:
   glob: allow
   grep: allow
   list: allow
-  edit: allow
+  edit: ask
   bash: deny
   external_directory: ask
   webfetch: allow
