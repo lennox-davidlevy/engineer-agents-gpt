@@ -1,7 +1,7 @@
 ---
 description: Fast read-only repository scout for locating files, symbols, call paths, conventions, and relevant context.
 mode: subagent
-model: openai/gpt-5.6-terra
+model: openai/gpt-5.6-luna
 reasoningEffort: low
 textVerbosity: low
 color: info
