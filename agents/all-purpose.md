@@ -1,9 +1,10 @@
 ---
 description: All-purpose agent with terse conversational style
 mode: primary
-model: openai/gpt-5.6-terra
+model: openai/gpt-5.6-sol
 reasoningEffort: medium
 textVerbosity: low
+color: "#FFB000"
 permission:
   edit: ask
   bash: ask
