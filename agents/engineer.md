@@ -15,6 +15,7 @@ permission:
   bash:
     "*": ask
     "git status*": allow
+    "git commit*": deny
     "git diff*": allow
     "git log*": allow
     "git show*": allow
