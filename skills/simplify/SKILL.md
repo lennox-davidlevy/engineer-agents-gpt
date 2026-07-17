@@ -1,7 +1,6 @@
 ---
 name: simplify
 description: Grind a piece of code down until the same behaviour survives in half the code — repeated shrinking passes under a test harness.
-disable-model-invocation: true
 ---
 
 # Simplify
