@@ -9,18 +9,19 @@ A skill exists to wrangle determinism out of a stochastic system. **Predictabili
 
 ## Invocation
 
-Two choices, trading different costs:
+OpenCode's documented skill format requires a **description** for every skill; `disable-model-invocation` is not a supported field. The active agent's `permission.skill` rules produce three outcomes:
 
-- A **model-invoked** skill keeps a **description**, so the agent can fire it autonomously _and_ other skills can reach it (you can still type its name too). It contributes to **context load** — the description sits in the window every turn. Mechanics: omit `disable-model-invocation`, and write a model-facing description with rich trigger phrasing ("Use when the user wants…, mentions…").
-- A **user-invoked** skill strips the description from the agent's reach: only you, typing its name, can invoke it — and no other skill can. Zero context load, but it spends **cognitive load**: _you_ are the index that must remember it exists. Mechanics: set `disable-model-invocation: true`; the `description` becomes human-facing — a one-line summary, trigger lists stripped.
+- An `allow` skill is model-visible and can be loaded without approval.
+- An `ask` skill is model-visible, but loading it requires approval.
+- A **user-invoked** skill is denied by the active agent's `permission.skill` rules, so it is omitted from that agent's skill list and contributes no model **context load**. In the OpenCode versions tested by this repository, you can still invoke it directly as a slash command. Treat that bypass as version-specific behavior and recheck it after upgrades.
 
-Pick model-invocation only when the agent must reach the skill on its own, or another skill must. If it only ever fires by hand, make it user-invoked and pay no context load.
+Use `allow` only when the agent should load the skill on its own, `ask` when each load needs approval, and `deny` when it should fire only by hand. A denied skill spends no model **context load**, but it spends the human **cognitive load** of remembering it.
 
 When user-invoked skills multiply past what you can remember, that piled-up cognitive load is cured by a **router skill**: one user-invoked skill that names the others and when to reach for each.
 
 ## Writing the description
 
-A model-invoked **description** does two jobs — state what the skill is, and list the **branches** that should trigger it. Every word increases **context load**, so a description earns even harder pruning than the body:
+A model-visible **description** does two jobs — state what the skill is, and list the **branches** that should trigger it. Every word increases **context load**, so a description earns even harder pruning than the body:
 
 - **Front-load the skill's leading word** — the description is where it does its invocation work.
 - **One trigger per branch.** Synonyms that rename a single branch are **duplication** — "build features using TDD … asks for test-first development" is one branch written twice. Collapse them; keep only genuinely distinct branches.
@@ -46,7 +47,7 @@ Where the ladder decides _how far down_ a piece sits, **co-location** decides _w
 
 **Granularity** is how finely you divide skills, and each cut spends one of the two loads, so split only when the cut earns it. Two cuts:
 
-- **By invocation** — split off a **model-invoked** skill when you have a distinct **leading word** that should trigger it on its own, or another skill must reach it. You pay **context load** for the new always-loaded **description**, so that independent reach has to be worth it.
+- **By invocation** — split off a **model-invoked** skill when you have a distinct **leading word** that should trigger it on its own, or another skill must reach it. You pay **context load** for its **description** in each agent that allows it, so that independent reach has to be worth it.
 - **By sequence** — split a run of **steps** when the steps still ahead (a step's **post-completion steps**) tempt the agent to rush the one in front of it (**premature completion**). Keeping them out of view encourages the agent to do more **legwork** on the current task.
 
 ## Pruning
