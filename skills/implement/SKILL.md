@@ -11,4 +11,6 @@ Run typechecking regularly, single test files regularly, and the full test suite
 
 Once done, use /code-review to review the work.
 
-Commit your work to the current branch.
+Address every actionable finding, rerun the relevant checks, and repeat /code-review. Continue until the final diff has no actionable findings and all required checks pass.
+
+Report the work as tested, reviewed, and ready for the user to commit. Do not commit it yourself.

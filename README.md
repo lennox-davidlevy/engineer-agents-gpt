@@ -32,12 +32,12 @@ The hidden Standards and Spec review lanes are internal to `reviewer`; primary a
 The setup expects an OpenCode provider that exposes the configured OpenAI model IDs:
 
 - Sol for engineering, design, difficult diagnosis, transformations, and review
-- Terra for cost-efficient implementation, research, and general conversation
+- Terra for cost-efficient implementation and research
 - Luna for fast repository exploration
 
 Model binding and provider-option propagation could not be validated without loading the machine's real provider configuration, which was intentionally kept out of the isolated tests. For the same reason, the planned lightweight system-model override remains unset rather than assuming `openai/gpt-5.6-luna-fast` is available. Verify the configured model IDs with `opencode models` in each installed environment.
 
-`engineer` is the default primary agent. `design` is the high-effort architecture partner, and `all-purpose` is a cost-efficient conversational alternative that does not delegate work.
+`engineer` is the default primary agent. `design` is the high-effort architecture partner, and `all-purpose` is a terse, Sol-backed conversational alternative that does not delegate work.
 
 OpenCode's built-in LSP support is enabled. In isolated portability checks, a repository with `gopls` produced diagnostics, while a repository without its expected PHP server stayed quiet and returned no diagnostics. Consuming projects can override LSP settings if their language-server setup behaves differently.
 
