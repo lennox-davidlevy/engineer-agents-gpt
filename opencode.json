@@ -1,6 +1,6 @@
 {
   "$schema": "https://opencode.ai/config.json",
-  "default_agent": "all-purpose",
+  "default_agent": "engineer",
   "lsp": true,
   "permission": {
     "websearch": "allow"
