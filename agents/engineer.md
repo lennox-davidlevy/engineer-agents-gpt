@@ -42,6 +42,7 @@ permission:
     implement: allow
     improve-codebase-architecture: allow
     modularize: allow
+    okf: allow
     prototype: allow
     research: allow
     simplify: allow

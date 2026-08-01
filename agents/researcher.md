@@ -16,7 +16,9 @@ permission:
   webfetch: allow
   websearch: allow
   task: deny
-  skill: deny
+  skill:
+    "*": deny
+    okf: allow
 ---
 Investigate the assigned question against primary sources: official documentation, specifications, source repositories, release notes, and first-party APIs. Treat secondary sources only as leads.
 
