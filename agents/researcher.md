@@ -18,7 +18,7 @@ permission:
   task: deny
   skill:
     "*": deny
-    okf: allow
+    query-okf: allow
 ---
 Investigate the assigned question against primary sources: official documentation, specifications, source repositories, release notes, and first-party APIs. Treat secondary sources only as leads.
 

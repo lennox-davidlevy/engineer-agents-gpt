@@ -13,7 +13,7 @@ permission:
     "*": deny
     ask-matt: allow
     research: allow
-    okf: allow
+    query-okf: allow
     handoff: allow
     teach: allow
 ---

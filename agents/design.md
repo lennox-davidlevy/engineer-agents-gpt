@@ -38,8 +38,8 @@ permission:
     grilling: allow
     handoff: allow
     improve-codebase-architecture: allow
-    okf: allow
     prototype: allow
+    query-okf: allow
     research: allow
     to-issues: allow
     to-prd: allow

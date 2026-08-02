@@ -35,6 +35,7 @@ permission:
     ask-matt: allow
     code-review: allow
     codebase-design: allow
+    curate-okf: allow
     diagnosing-bugs: allow
     domain-modeling: allow
     grilling: allow
@@ -42,8 +43,8 @@ permission:
     implement: allow
     improve-codebase-architecture: allow
     modularize: allow
-    okf: allow
     prototype: allow
+    query-okf: allow
     research: allow
     simplify: allow
     tdd: allow
