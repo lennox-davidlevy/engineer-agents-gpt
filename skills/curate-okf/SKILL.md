@@ -1,52 +1,53 @@
 ---
 name: curate-okf
-description: Curate an OKF bundle from raw Markdown, or improve an existing bundle.
+description: Create or update an OKF v0.2 bundle in place from a directory of Markdown documentation.
 ---
 
-Curate for lossless retrieval: turn scattered documents into durable concepts that an unfamiliar agent can find, trust, and trace. Target OKF v0.2. Do not mistake smaller files for better knowledge.
+Turn a current, possibly messy Markdown corpus into durable concepts that an unfamiliar agent can find, trust, and use. Target OKF v0.2. The bundle is malleable: organize it for retrieval rather than preserving the source layout mechanically.
 
-## Branches
+## Modes
 
-- **Convert** raw notes, a large Markdown file, or an irregular documentation tree into a new bundle. Source material is evidence: never edit, move, rename, or delete it. Create the bundle at a collision-free sibling path unless the user chooses another destination; source and bundle trees must remain disjoint.
-- **Improve** a confirmed OKF bundle in place. Preserve valid knowledge, concept IDs, source attribution, and unknown frontmatter unless changing one is necessary to correct a demonstrated defect.
+- **Create** when the target directory contains raw or irregular Markdown rather than a usable bundle. Curate that directory in place unless the user names another destination.
+- **Update** when the target is already an OKF bundle and its Markdown has been added, replaced, or deleted to reflect newer documentation. Reconcile the current corpus with the existing organization.
 
-A mixed or malformed directory is raw source unless the user explicitly identifies it as a bundle to repair. There is no ignored directory inside OKF: every non-reserved `.md` file below the bundle root is a concept.
+A mixed or temporarily malformed directory is valid input. Do not require a second untouched source tree, a digest manifest, or a permanent source map. The current Markdown is the evidence to curate. Every non-reserved `.md` file below the bundle root becomes a concept; non-Markdown files are outside this skill's input contract.
 
-Run end-to-end without a routine approval gate. Pause only when a material decision cannot be inferred safely, including suspected secrets, conflicting authoritative claims, multiple plausible audiences, an ambiguous bundle boundary, or a destination collision.
+Follow the host's write and command authorization rules. Pause when a material decision cannot be inferred safely, including suspected secrets, conflicting authoritative claims, an ambiguous bundle boundary, or multiple plausible audiences.
 
 ## Process
 
-1. **Establish the boundary.** Identify the source root, bundle root, intended audience, and the questions the material appears meant to answer. On the convert branch, resolve both roots and reject either tree containing the other; inventory every source file and record its resolved path and SHA-256 digest in a temporary manifest outside both trees. Mark non-Markdown files as unsupported input rather than extracting knowledge from them. For large Markdown files, inventory substantive sections as well. On the improve branch, inventory every existing file and inspect indexes and frontmatter before reading concept bodies.
+1. **Establish the current corpus.** Confirm the bundle root, intended audience, and the questions the documentation should answer. Inventory every Markdown file and substantive section. Inspect existing indexes and frontmatter before reading bodies; when Git history is available, use the current diff as evidence of additions, replacements, deletions, and renames, but do not require Git. List non-Markdown files as unsupported rather than silently extracting from them.
 
-   Complete when every input is listed and any material ambiguity has been resolved; conversion additionally requires disjoint trees and a complete pre-write source manifest.
+   Complete when every input is accounted for and material ambiguity is resolved.
 
-2. **Build the coverage map.** On the convert branch, map every useful claim in every Markdown source file and substantive section to one or more target concept IDs. Map duplicates to the shared concept and retain conflicts as attributed claims. Exclude only empty, structural, or boilerplate Markdown that carries no knowledge, with a concrete reason; stale, unsupported, contradictory, or out-of-scope knowledge is not excludable. List non-Markdown files separately as unconverted. On the improve branch, assign every existing concept a disposition such as keep, split, merge, relink, or deprecate. Decompose by durable meaning—an asset, idea, decision, procedure, contract, or computation—not mechanically by heading or length. A concept may combine related passages from several sources, and one source may feed several concepts.
+2. **Build the coverage map.** Map every substantive source section to one or more target concepts. Consolidate repetition, preserve contradictory or version-specific guidance with attribution, and exclude only empty, purely navigational, redundant, or boilerplate material with a concrete reason. Generated documentation is evidence when it contains unique knowledge; never exclude it merely because a tool produced it. For an update, give each existing concept a disposition such as keep, revise, split, merge, move, or remove. Decompose by durable meaning—an asset, idea, decision, procedure, contract, or computation—not mechanically by heading or length.
 
-   Complete when conversion maps every useful claim and permits only demonstrably non-knowledge exclusions, improvement accounts for every existing concept without losing valid knowledge, and every proposed concept has a distinct purpose.
+   Complete when every substantive section is represented, every exclusion is justified, and every proposed concept has a distinct purpose.
 
-3. **Design the wayfinding.** Choose a small, self-explanatory type vocabulary suited to the domain. Plan shallow directories, a root index, an index for each directory, concise titles and descriptions, and prose links whose surrounding text names the relationship. Derive representative questions from the corpus and ensure the index descriptions route each question toward its answer.
+3. **Design for retrieval.** Derive representative user questions from the corpus. Choose a small, self-explanatory type vocabulary; plan shallow directories, concise titles and descriptions, useful indexes, and prose links whose surrounding text names the relationship. Preserve an existing concept ID—the file path without `.md`—when the concept still means substantially the same thing. Rename, split, or merge only when the old organization materially harms retrieval, then repair every affected link.
 
-   Complete when every concept is reachable from the root, sibling concepts are distinguishable from their descriptions, and each representative question has a short planned route.
+   Complete when every concept is discoverable, sibling descriptions are distinguishable, stable IDs are preserved where useful, and each representative question has a short planned route.
 
-4. **Write the bundle.** Before writing, read [`CONFORMANCE.md`](CONFORMANCE.md) and apply every applicable v0.2 rule. Normally give each concept `type`, `title`, and `description`; add `resource`, tags, provenance, trust, and lifecycle metadata only when the source supports them. Never invent verification, freshness, authority, or source credibility. Preserve disagreements and superseded material with attribution instead of synthesizing false consensus.
+4. **Curate in place.** Before writing, read [`CONFORMANCE.md`](CONFORMANCE.md) and apply every applicable v0.2 rule. Normally give each concept `type`, `title`, and `description`; add `resource`, tags, provenance, trust, and lifecycle metadata only when the evidence supports them. Never invent verification, freshness, authority, source identity, or credibility. Preserve unknown frontmatter on retained concepts. If content changes materially, refresh truthful generation metadata and remove verification that no longer covers the current text.
 
-   On the convert branch, create `provenance/source-map.md` as a conformant `Source Map` concept containing the coverage map, source paths, and pre-write digests, then link it from the root index. Point each concept's `sources` entries to the precise original files or external sources it derives from. The originals remain outside the bundle.
+   Keep paths stable by default. New or replacement raw Markdown may be rewritten, moved, split, or merged when needed for coherent concepts. Update root and directory indexes, repair internal links, and update `log.md` when one exists. Do not create bookkeeping concepts that do not help a future consumer answer questions.
 
-   On the improve branch, make the smallest coherent changes that fix coverage, decomposition, wayfinding, provenance, or lifecycle defects. Do not churn paths or metadata merely for uniformity.
+   Complete when the planned concepts, indexes, and links exist; every retained claim is supported by the current corpus; and no path or metadata changed merely for uniformity.
 
-   Complete when the planned concepts, indexes, links, and conversion provenance exist and every generated claim remains traceable to source material.
+5. **Validate mechanically.** Locate `scripts/validate_okf.py` beside this skill and run:
 
-5. **Audit exhaustively.** Inspect every bundle file; sampling is not validation. Separate hard conformance failures from quality defects:
+   ```sh
+   uv run <skill-dir>/scripts/validate_okf.py <bundle-dir>
+   ```
 
-   - **Conformance:** every non-reserved `.md` has parseable YAML frontmatter and a non-empty `type`; every `index.md` and `log.md` follows its reserved structure.
-   - **Field contracts:** every optional family that is present follows its specified shape, and an Attested Computation carries its required runtime contract. Record these separately from structural conformance.
-   - **Coverage:** every source disposition appears in the bundle or source map, with exclusions and conflicts explicit.
-   - **Wayfinding:** every concept is indexed, descriptions discriminate, directories disclose their contents, and internal links resolve. Broken links are conformant but remain quality defects when the target should exist.
-   - **Integrity:** on conversion, recompute every source digest against the pre-write manifest, require the same paths and bytes, and confirm no source path entered the bundle. On both branches, check for invented claims, fabricated trust signals, accidental secrets, or lost unknown metadata.
-   - **Retrieval:** load `query-okf` and answer the representative questions index-first. Improve the bundle when an answer needs broad searching, excessive concept reads, or source guesswork.
+   Fix every conformance error. Resolve quality warnings when they identify a real producer defect; OKF consumers tolerate missing indexes and broken links, but a bundle curated for retrieval should not leave its own concepts unreachable. The validator checks structure, not coverage or truth.
 
-   Complete when there are zero conformance failures, zero unresolved field-contract defects, zero unaccounted useful claims, zero orphan concepts, conversion sources are byte-for-byte unchanged, and each representative question is answered by a short, source-backed route or recorded as a genuine knowledge gap.
+   Complete when the validator reports zero errors and every remaining warning is understood and justified.
 
-6. **Report the result.** Give the source and bundle paths, concept and Markdown-source counts, unconverted non-Markdown files, exclusions and unresolved conflicts, conformance result, quality defects intentionally left open, and retrieval questions tested. On conversion, state explicitly that the original sources were unchanged and verified against the manifest.
+6. **Test retrieval.** Load `query-okf` and answer the representative questions index-first. Improve the bundle when answers require broad searching, ambiguous index entries, unnecessary concept reads, or unsupported inference.
 
-   Complete when the user can locate the bundle, understand its trust limits, and reproduce the audit.
+   Complete when each representative question has a short, source-backed route or exposes a genuine knowledge gap.
+
+7. **Report the result.** Give the bundle path, mode, concept count, unsupported files, exclusions, conflicts, preserved and changed concept IDs, validator result, remaining quality warnings, and retrieval questions tested.
+
+   Complete when the user can locate the bundle, understand what changed and its trust limits, and reproduce the validation.

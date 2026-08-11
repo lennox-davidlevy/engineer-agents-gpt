@@ -19,11 +19,11 @@ Query an OKF bundle by wayfinding, not bulk reading. A bundle is a directory tre
 
    Complete when every part of the answer is supported, or the bundle's gap is established without speculative reading.
 
-4. Answer the question, naming the concept IDs used. Put a trust or lifecycle caveat beside the claim it affects. List the concepts read, and report a wayfinding defect when the answer required broad searching because an index or description did not expose it.
+4. Answer naturally, citing the concept IDs used either inline or in a compact source list. Put a trust or lifecycle caveat beside the claim it affects. Report a wayfinding defect only when poor navigation materially obstructed the answer.
 
    Complete when the answer or documented absence is clear, attributed, and reproducible from the reported route.
 
-If one question requires more than six concepts, stop and reassess the route. Continue only when the question genuinely spans that many concepts; otherwise report that the bundle needs better decomposition, descriptions, links, or indexes.
+When answering requires unexpectedly broad reading, reassess the route before opening more concepts. Broad questions may legitimately span many concepts; the signal of a defect is unnecessary or speculative reading, not a fixed count.
 
 ## Trust and lifecycle
 
@@ -38,7 +38,7 @@ All fields below are optional. Their absence never makes a concept malformed.
 | `status: deprecated` | retained for history, not current guidance |
 | today on or after `stale_after` | stale |
 
-`generated` identifies how the current content was produced and when it last changed; it is not verification. Prefer fresh, human-reviewed concepts when claims conflict, but report the contradiction rather than silently choosing. Do not withhold an answer solely because its support is unverified.
+`generated` identifies how the current content was produced and when it last changed; it is not verification. When `generated.at` is later than a verification event, that event does not confirm the current text even though the formal OKF trust tier still derives from the presence of `verified`. Prefer fresh, currently human-reviewed concepts when claims conflict, but report the contradiction rather than silently choosing. Do not withhold an answer solely because its support is unverified.
 
 ## Consumer tolerance
 

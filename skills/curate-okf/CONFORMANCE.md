@@ -51,4 +51,10 @@ When improving or converting v0.1 material, migrate legacy `timestamp` to `gener
 
 ## Validation claim
 
-The official project does not provide a standalone bundle-validator command. Report this work as an exhaustive audit against the specification, not as certification by official tooling.
+The official project does not provide a standalone bundle-validator command. This skill bundles `scripts/validate_okf.py`, a local deterministic checker against the v0.2 specification. Run it with:
+
+```sh
+uv run <skill-dir>/scripts/validate_okf.py <bundle-dir>
+```
+
+Errors are hard conformance failures. Warnings are producer-quality findings such as broken links, unindexed concepts, malformed optional metadata, or missing recommended descriptions. A clean run is not certification by Google and cannot establish coverage, truth, or retrieval quality; the curation and query checks do that.
