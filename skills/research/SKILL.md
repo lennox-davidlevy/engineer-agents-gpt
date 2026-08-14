@@ -1,12 +1,14 @@
 ---
 name: research
-description: Investigate a question against high-trust primary sources and capture the findings as a Markdown file in the repo. Use when the user wants a topic researched, docs or API facts gathered, or reading legwork delegated to a background agent.
+description: Investigate a question against high-trust primary sources. Use when the user wants current documentation, API facts, specifications, or external technical evidence.
 ---
 
-Spin up a **background agent** to do the research, so you keep working while it reads.
+Delegate source retrieval to `researcher` with the exact question, source-quality requirements, and required evidence. Use multiple researchers only for genuinely independent lines of inquiry.
 
-Its job:
+The researcher must:
 
 1. Investigate the question against **primary sources** — official docs, source code, specs, first-party APIs — not a secondary write-up of them. Follow every claim back to the source that owns it.
-2. Write the findings to a single Markdown file, citing each claim's source.
-3. Save it where the repo already keeps such notes; match the existing convention, and if there is none, put it somewhere sensible and say where.
+2. Return relevant excerpts, URLs, publication dates, conflicts, and uncertainty.
+3. Separate source claims from inference and reject unsupported secondary summaries.
+
+Verify the important claims, synthesize the answer yourself, and write a repository artifact only when the user explicitly requests one.
