@@ -1,6 +1,6 @@
 # Engineer GPT for OpenCode
 
-This repository installs a focused engineering setup for OpenCode. `design` develops project ideas and implementation-ready plans; the Sol-backed `engineer` owns implementation, debugging, refactoring, and validation directly. Both delegate only bounded read-only exploration, external research, and independent review. `all-purpose` is a non-delegating conversational alternative.
+This repository installs a focused engineering setup for OpenCode. The Sol-backed `forge` is the default daily engineering agent: it inspects freely, carries explicit implementation requests through local edits and validation, and pauses for consequential side effects. `design` develops project ideas and implementation-ready plans; `engineer` remains the approval-first implementation alternative. These agents delegate only bounded read-only exploration, external research, and independent review. `all-purpose` is a non-delegating conversational alternative.
 
 ## Install
 
@@ -17,11 +17,12 @@ git clone git@github.com:lennox-davidlevy/engineer-agents-gpt.git .opencode
 
 ## What approval means
 
-- `engineer` reads, searches, and runs read-only Git inspection commands without prompting.
-- Direct edits and general shell commands require approval.
+- `forge` reads and inspects without prompting. An explicit implementation request authorizes workspace edits and ordinary local validation.
+- Advice, review, diagnosis, and planning stay read-only unless the user separately requests implementation.
 - Read-only subagents (`explore`, `researcher`, and `reviewer`) launch without approval. Research artifacts still require edit approval.
-- Production implementation, edits, and validation remain in the main `engineer` context. A session handoff may transfer approved design decisions, but it does not authorize implementation.
-- Direct `git commit` remains denied. External writes, destructive actions, pushes, and material scope expansion require specific approval.
+- Production implementation, edits, and validation remain in the main `forge` context. A session handoff may transfer approved design decisions, but it does not authorize implementation.
+- Commits, pushes, external writes, destructive actions, and material scope expansion require specific approval.
+- `engineer` remains available when approval before edits and general shell commands is preferred.
 
 These permissions are guardrails, not a sandbox.
 
@@ -35,7 +36,7 @@ The setup expects an OpenCode provider that exposes the configured OpenAI model 
 
 Model binding and provider-option propagation could not be validated without loading the machine's real provider configuration, which was intentionally kept out of the isolated tests. For the same reason, the planned lightweight system-model override remains unset rather than assuming `openai/gpt-5.6-luna-fast` is available. Verify the configured model IDs with `opencode models` in each installed environment.
 
-`engineer` is the default primary agent. `design` is the high-effort thinking and planning primary used before a fresh engineering session. `all-purpose` is the terse conversational primary for work that does not need either workflow.
+`forge` is the default primary agent. `design` is the high-effort thinking and planning primary used before a fresh engineering session. `engineer` offers the same focused engineering role with approval-first edits and shell commands. `all-purpose` is the terse conversational primary for work that does not need either workflow.
 
 OpenCode's built-in LSP support is enabled. In isolated portability checks, a repository with `gopls` produced diagnostics, while a repository without its expected PHP server stayed quiet and returned no diagnostics. Consuming projects can override LSP settings if their language-server setup behaves differently.
 
