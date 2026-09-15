@@ -1,14 +1,10 @@
 ---
 name: research
-description: Investigate a question against high-trust primary sources. Use when the user wants current documentation, API facts, specifications, or external technical evidence.
+description: Answer a current technical question from primary sources with claim-level evidence.
 ---
 
-Delegate source retrieval to `researcher` with the exact question, source-quality requirements, and required evidence. Use multiple researchers only for genuinely independent lines of inquiry.
+Use official documentation, specifications, source repositories, release notes, and first-party APIs. Treat secondary sources as leads and follow important claims back to the source that owns them.
 
-The researcher must:
+If the active agent can delegate and source retrieval is substantial, give `researcher` the exact question, source-quality requirements, and evidence needed. Otherwise retrieve the sources directly. Use multiple researchers only for genuinely independent lines of inquiry.
 
-1. Investigate the question against **primary sources** — official docs, source code, specs, first-party APIs — not a secondary write-up of them. Follow every claim back to the source that owns it.
-2. Return relevant excerpts, URLs, publication dates, conflicts, and uncertainty.
-3. Separate source claims from inference and reject unsupported secondary summaries.
-
-Verify the important claims, synthesize the answer yourself, and write a repository artifact only when the user explicitly requests one.
+Return relevant excerpts, URLs, publication dates, conflicts, and uncertainty. Separate what sources establish from inference. Verify consequential claims before synthesizing the answer. Write a repository artifact only when the user asks for one.
