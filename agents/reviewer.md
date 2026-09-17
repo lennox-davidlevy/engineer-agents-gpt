@@ -4,6 +4,9 @@ mode: subagent
 model: openai/gpt-6-astra#high
 color: "#22C55E"
 permissions:
+  - action: execute
+    resource: "*"
+    effect: allow
   - action: edit
     resource: "*"
     effect: deny

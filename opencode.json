@@ -2,8 +2,25 @@
   "$schema": "https://opencode.ai/config.json",
   "default_agent": "engineer",
   "permissions": [
-    { "action": "websearch", "resource": "*", "effect": "allow" }
+    { "action": "execute", "resource": "*", "effect": "deny" },
+    { "action": "browser", "resource": "*", "effect": "deny" },
+    { "action": "websearch", "resource": "*", "effect": "deny" },
+    { "action": "webfetch", "resource": "*", "effect": "deny" },
+    { "action": "context7_*", "resource": "*", "effect": "deny" },
+    { "action": "shell", "resource": "git commit *", "effect": "deny" },
+    { "action": "shell", "resource": "git push *", "effect": "deny" }
   ],
+  "websearch": { "provider": "random" },
+  "mcp": {
+    "servers": {
+      "context7": {
+        "type": "remote",
+        "url": "https://mcp.context7.com/mcp",
+        "codemode": true,
+        "timeout": { "execution": 60000 }
+      }
+    }
+  },
   "agents": {
     "build": {
       "disabled": true

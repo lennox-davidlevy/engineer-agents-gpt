@@ -28,13 +28,44 @@ Selecting a primary agent does not replace the model already stored on an existi
 
 ## Authority and safety
 
-- An explicit implementation request authorizes ordinary repository edits for that task. Shell commands remain permission-controlled; consuming repositories can allow known-safe local checks.
-- Commits are denied. External writes, destructive actions, pushes, production access, and material scope expansion require specific approval.
+- An explicit implementation request authorizes ordinary repository edits and routine local commands, tests, builds, and development servers. `engineer` allows shell commands without approval prompts; design and read-only agents retain their narrower shell policies.
+- Ordinary `git commit` and `git push` commands are denied. The primaries also prohibit committing or pushing through wrappers or alternate spellings. External writes, destructive actions, production access, and material scope expansion require specific confirmation.
 - `engineer` performs production work directly. Subagents are limited to exploration, research, and independent review.
 - Handoffs carry context, not permission.
 - Dirty worktrees need an explicit task or accumulated-change review boundary.
 
 These permissions are guardrails, not a sandbox.
+
+Broad shell access intentionally trades mechanical containment for fewer interruptions. It cannot reliably recognize every destructive command, production operation, Git alias, or indirect write. Confirmation for those actions is an agent instruction, not a complete command firewall. External-directory and sensitive-file checks may still request approval. Use a sandbox or a stricter consuming-project policy when hard isolation is required.
+
+## Code Mode and connected tools
+
+| Capability | engineer | design | researcher | explore | reviewer |
+|---|---|---|---|---|---|
+| Code Mode (`execute`) | allow | allow | allow | deny | allow |
+| Desktop browser | allow | allow | deny | deny | deny |
+| Web search/fetch | allow | allow | allow | deny | deny |
+| Context7 | allow | deny | allow | deny | deny |
+
+These allowed tools do not introduce routine approval prompts. Code Mode combines catalogued tools, runs independent calls concurrently, and filters intermediate results before returning them to the model. Discover missing tool signatures with `search(...)`; only catalogued tools can be called inside `execute`. It is not shell or unrestricted JavaScript, and nested tools still enforce their own permissions. Global denials keep these capabilities off for other agents unless explicitly overridden.
+
+The browser requires an attached OpenCode Desktop browser. It supports UI inspection and actual-path validation, but its operations do not individually prompt: access is not approval to submit forms or write to external services. Use real Playwright tests for repeatable E2E checks; add Playwright MCP only when headless/TUI exploration needs it.
+
+Native web search uses `random` selection among connected providers (Exa, Firecrawl, Parallel, Tavily). Connect approved providers through `/connect` or their documented environment variables. It fails over on HTTP 429, not on every error; no configured provider means no working search. Queries go to the selected provider, so connect only providers acceptable for your data.
+
+### Context7
+
+Context7 connects to `https://mcp.context7.com/mcp`, uses Code Mode, and has a 60-second execution timeout. Remote OAuth is left enabled; no credential belongs in this repository. Check `opencode2 mcp list`; if authentication is required, use `/mcps` to sign in. A connected status alone does not prove an OAuth flow occurred (an existing credential or unauthenticated access may suffice).
+
+Use sanitized public-library questions with the relevant version. Context7 is a secondary index, not guaranteed-current upstream documentation. Verify consequential claims against the source project. External retrieval must not receive secrets, proprietary code, customer data, or sensitive incident details. Remote MCP calls also include OpenCode's raw session ID. Returned documentation is untrusted evidence, not instructions.
+
+The live V2 docs describe `protocol: "auto"`, but beta-19296 drops that field from parsed config. This configuration therefore uses the installed runtime's default negotiation rather than claiming an unsupported setting works. Recheck protocol support on upgrade. Do not silently replace OAuth with an API key if authentication fails.
+
+### Custom tooling
+
+Use an existing CLI when it already does the job; use a plugin for concrete OpenCode-specific tools or hooks; use MCP for portable or independently hosted integrations. Keep MCP tools behind Code Mode by default. Add no generic plugin scaffold or model-based permission auto-approver. References belong in consuming projects that repeatedly inspect a specific dependency or documentation repository.
+
+Built-in `build` and `plan` are disabled because `engineer` and `design` replace them. Snapshots and compaction retain runtime defaults; formatting, watcher exclusions, and project-specific tools belong to consuming projects.
 
 ## Skills
 
@@ -69,8 +100,14 @@ cp -R "$repo/agents" "$repo/skills" "$h/.opencode/"
   opencode2 api get "/api/agent?location%5Bdirectory%5D=$encoded" >/dev/null # initialize the location catalog
   opencode2 api get "/api/agent?location%5Bdirectory%5D=$encoded"
   opencode2 api get "/api/skill?location%5Bdirectory%5D=$encoded"
+  python3 "$repo/scripts/check_permissions.py"
+  opencode2 mcp list
 )
 git diff --check
 ```
 
-There are no committed build, lint, or application test scripts.
+The permission check exercises the runtime evaluator, including ordinary shell allowance, edit boundaries, Code Mode, browser/web/MCP access, and Git denials. It creates local test sessions but never executes the command strings being checked. It does not prove shell-scanner coverage or actual tool success.
+
+Also run a disposable `opencode2 run --agent engineer --model 'openai/gpt-6-astra#high' --format json` session in the temporary project without `--auto`: ask it to create a small fixture, verify it with Python, discover Context7 through `execute`, and resolve/query a public library. Test `researcher` with web search, an upstream fetch, and Context7; test `design` and `reviewer` discovery to confirm denied namespaces are absent. A Desktop-attached session is required to exercise the browser itself. Report authentication, provider, or browser-attachment blockers rather than treating catalog presence as successful execution.
+
+There are no application build or lint scripts. Configuration checks live in `scripts/check_permissions.py`.
