@@ -1,7 +1,7 @@
 ---
 description: Astra engineering lead for implementation, debugging, refactoring, and validated delivery.
 mode: primary
-model: openai/gpt-6-astra
+model: openai/gpt-6-astra#high
 color: "#3B82F6"
 permissions:
   - action: edit

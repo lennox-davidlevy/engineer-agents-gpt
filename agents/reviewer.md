@@ -1,7 +1,7 @@
 ---
 description: Independent high-recall reviewer for branch, PR, or worktree changes against repository standards and the originating specification.
 mode: subagent
-model: openai/gpt-6-astra
+model: openai/gpt-6-astra#high
 color: "#22C55E"
 permissions:
   - action: edit

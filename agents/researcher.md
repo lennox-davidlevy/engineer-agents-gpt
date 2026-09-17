@@ -1,7 +1,7 @@
 ---
 description: External researcher for current APIs, dependencies, specifications, and technical claims requiring primary sources.
 mode: subagent
-model: openai/gpt-5.6-terra
+model: openai/gpt-5.6-terra#medium
 color: "#14B8A6"
 permissions:
   - action: edit

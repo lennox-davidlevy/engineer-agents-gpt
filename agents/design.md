@@ -1,7 +1,7 @@
 ---
 description: Sol design partner for consequential product and architecture decisions before implementation.
 mode: primary
-model: openai/gpt-5.6-sol
+model: openai/gpt-5.6-sol#high
 color: "#A78BFA"
 permissions:
   - action: edit
