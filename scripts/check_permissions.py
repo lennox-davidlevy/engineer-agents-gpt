@@ -63,7 +63,12 @@ def main():
         })
         cases = [
             ("execute", "*", "deny" if agent == "explore" else "allow"),
-            ("browser", "*", "allow" if agent in ("engineer", "design") else "deny"),
+            ("browser", "*", "deny"),
+            ("playwright_browser_navigate", "*", "allow" if agent in ("engineer", "design") else "deny"),
+            ("playwright_browser_click", "*", "allow" if agent in ("engineer", "design") else "deny"),
+            ("playwright_browser_snapshot", "*", "allow" if agent in ("engineer", "design") else "deny"),
+            ("playwright_browser_close", "*", "allow" if agent in ("engineer", "design") else "deny"),
+            ("playwright_browser_run_code_unsafe", "*", "deny"),
             ("websearch", "React useState official documentation", "allow" if agent in ("engineer", "design", "researcher") else "deny"),
             ("webfetch", "https://react.dev/reference/react/useState", "allow" if agent in ("engineer", "design", "researcher") else "deny"),
             ("context7_query-docs", "*", "allow" if agent in ("engineer", "researcher") else "deny"),

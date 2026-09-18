@@ -4,6 +4,7 @@
   "permissions": [
     { "action": "execute", "resource": "*", "effect": "deny" },
     { "action": "browser", "resource": "*", "effect": "deny" },
+    { "action": "playwright_*", "resource": "*", "effect": "deny" },
     { "action": "websearch", "resource": "*", "effect": "deny" },
     { "action": "webfetch", "resource": "*", "effect": "deny" },
     { "action": "context7_*", "resource": "*", "effect": "deny" },
@@ -58,6 +59,12 @@
   "websearch": { "provider": "random" },
   "mcp": {
     "servers": {
+      "playwright": {
+        "type": "local",
+        "command": ["npx", "--yes", "--cache", ".cache/playwright-mcp/npm", "@playwright/mcp@0.0.81", "--browser", "chrome", "--headless", "--isolated", "--sandbox", "--output-dir", ".cache/playwright-mcp/output"],
+        "codemode": true,
+        "timeout": { "startup": 120000, "execution": 60000 }
+      },
       "context7": {
         "type": "remote",
         "url": "https://mcp.context7.com/mcp",

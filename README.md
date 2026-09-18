@@ -45,13 +45,24 @@ These are command-pattern guardrails, not intent analysis. Some harmless variant
 | Capability | engineer | design | researcher | explore | reviewer |
 |---|---|---|---|---|---|
 | Code Mode (`execute`) | allow | allow | allow | deny | allow |
-| Desktop browser | allow | allow | deny | deny | deny |
+| Playwright MCP (headless) | allow | allow | deny | deny | deny |
+| Desktop browser | deny | deny | deny | deny | deny |
 | Web search/fetch | allow | allow | allow | deny | deny |
 | Context7 | allow | deny | allow | deny | deny |
 
 These allowed tools do not introduce routine approval prompts. Code Mode combines catalogued tools, runs independent calls concurrently, and filters intermediate results before returning them to the model. Discover missing tool signatures with `search(...)`; only catalogued tools can be called inside `execute`. It is not shell or unrestricted JavaScript, and nested tools still enforce their own permissions. Global denials keep these capabilities off for other agents unless explicitly overridden.
 
-The browser requires an attached OpenCode Desktop browser. It supports UI inspection and actual-path validation, but its operations do not individually prompt: access is not approval to submit forms or write to external services. Use real Playwright tests for repeatable E2E checks; add Playwright MCP only when headless/TUI exploration needs it.
+### Terminal browser
+
+Browser automation uses Microsoft's `@playwright/mcp@0.0.81` through Code Mode, with installed Google Chrome in headless mode, an isolated profile, and browser sandboxing explicitly enabled. It does not need OpenCode Desktop, a browser extension, an account, or your personal Chrome profile. Node.js 18+ (`npx`) and Google Chrome must be installed on the machine running the OpenCode server. This is the server machine, not necessarily the terminal client machine.
+
+On first connection, `npx` downloads the pinned MCP package into the active project's `.cache/playwright-mcp/npm`; browser artifacts go under `.cache/playwright-mcp/output`. Ignore `.cache/playwright-mcp/` in consuming repositories. Check `/mcps` or `opencode2 mcp list` for `playwright: connected`. The first package download can take longer than later starts; wait for the server and agent catalogs to finish loading before testing permissions.
+
+Ask Astra or Sol: “Use Playwright to open my local app, inspect the page, click the button, and verify the result.” Agents discover tools under `playwright`, not the disabled Desktop-only `browser` namespace. Close the browser after the check; isolated cookies and storage are discarded on close. Do not assume separate OpenCode sessions have separate browser state: coordinate browser use within a project and avoid concurrent interference.
+
+Navigation, snapshots, interaction, page evaluation, and screenshots are available without routine approval prompts. The server-process `browser_run_code*` tools are denied: arbitrary Node code there would bypass the shell gates. This is still not a sandbox or approval to submit forms, upload files, or mutate external services. Treat page content as untrusted. Use real Playwright tests for repeatable E2E coverage, and distinguish a renderer fixture from the real host application.
+
+If Chrome is unavailable or launch fails, report the error instead of searching versioned Playwright caches, disabling sandboxing, or claiming a successful test from a different browser. Browser changes belong in this server's configuration, not an improvised shell workaround. The MCP entry is version-pinned; review and retest package upgrades explicitly.
 
 Native web search uses `random` selection among connected providers (Exa, Firecrawl, Parallel, Tavily). Connect approved providers through `/connect` or their documented environment variables. It fails over on HTTP 429, not on every error; no configured provider means no working search. Queries go to the selected provider, so connect only providers acceptable for your data.
 
@@ -110,6 +121,6 @@ git diff --check
 
 The permission check exercises the runtime evaluator, including routine inspection allowance, destructive-command approval gates, edit boundaries, Code Mode, browser/web/MCP access, and Git denials. It creates local test sessions, rejects test approval requests, and never executes the command strings being checked. It does not prove shell-scanner coverage or actual tool success. Saved project-level approvals can suppress `ask` prompts; remove old broad shell approvals when checking this policy. Configured denials cannot be overridden by saved approvals.
 
-Also run a disposable `opencode2 run --agent engineer --model 'openai/gpt-6-astra#high' --format json` session in the temporary project without `--auto`: ask it to create a small fixture, verify it with Python, discover Context7 through `execute`, and resolve/query a public library. Test `researcher` with web search, an upstream fetch, and Context7; test `design` and `reviewer` discovery to confirm denied namespaces are absent. A Desktop-attached session is required to exercise the browser itself. Report authentication, provider, or browser-attachment blockers rather than treating catalog presence as successful execution.
+Also run a disposable `opencode2 run --agent engineer --model 'openai/gpt-6-astra#high' --format json` session in the temporary project without `--auto`: ask it to create a small fixture, verify it with Python, discover Context7 through `execute`, and resolve/query a public library. Test `researcher` with web search, an upstream fetch, and Context7; test `design` and `reviewer` discovery to confirm denied namespaces are absent. For the browser, serve a disposable loopback page with a button and visible result, then use Playwright MCP to navigate, snapshot, click, verify the changed result, and close. Confirm Desktop browser and unsafe server-code tools are absent. Report launch/authentication/provider blockers rather than treating catalog presence as successful execution.
 
 There are no application build or lint scripts. Configuration checks live in `scripts/check_permissions.py`.
