@@ -7,15 +7,6 @@ permissions:
   - action: edit
     resource: "*"
     effect: allow
-  - action: shell
-    resource: "*"
-    effect: allow
-  - action: shell
-    resource: "git commit *"
-    effect: deny
-  - action: shell
-    resource: "git push *"
-    effect: deny
   - action: execute
     resource: "*"
     effect: allow

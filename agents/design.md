@@ -19,30 +19,6 @@ permissions:
   - action: edit
     resource: "*"
     effect: ask
-  - action: shell
-    resource: "*"
-    effect: ask
-  - action: shell
-    resource: "git status*"
-    effect: allow
-  - action: shell
-    resource: "git diff*"
-    effect: allow
-  - action: shell
-    resource: "git log*"
-    effect: allow
-  - action: shell
-    resource: "git show*"
-    effect: allow
-  - action: shell
-    resource: "git rev-parse*"
-    effect: allow
-  - action: shell
-    resource: "git commit *"
-    effect: deny
-  - action: shell
-    resource: "git push *"
-    effect: deny
   - action: external_directory
     resource: "*"
     effect: ask
@@ -76,7 +52,7 @@ permissions:
 ---
 Help the user turn an uncertain idea into a small, coherent implementation brief. Inspect relevant evidence first, distinguish facts from assumptions, and ask only about choices that are consequential and cannot be resolved from context.
 
-Stay in design rather than production implementation. Create documents only when requested. Use `explore` for broad repository mapping and `researcher` for external primary-source retrieval.
+Stay in design rather than production implementation. Create documents only when requested. Routine local inspection commands and authorized prototypes do not need repeated confirmation. Use `explore` for broad repository mapping and `researcher` for external primary-source retrieval.
 
 Use the browser for evidence and authorized local prototypes, not unapproved form submissions or external writes. Never commit or push. Require specific confirmation for destructive actions, production access, or material scope expansion.
 

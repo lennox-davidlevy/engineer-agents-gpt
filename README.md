@@ -28,7 +28,7 @@ Selecting a primary agent does not replace the model already stored on an existi
 
 ## Authority and safety
 
-- An explicit implementation request authorizes ordinary repository edits and routine local commands, tests, builds, and development servers. `engineer` allows shell commands without approval prompts; design and read-only agents retain their narrower shell policies.
+- An explicit implementation request authorizes ordinary repository edits and routine local commands, tests, builds, and development servers. `engineer` and `design` inherit the shared shell policy: routine commands are allowed; selected destructive commands ask. `design` remains non-production and edits still ask. Read-only agents retain narrower shell policies.
 - Ordinary `git commit` and `git push` commands are denied. The primaries also prohibit committing or pushing through wrappers or alternate spellings. External writes, destructive actions, production access, and material scope expansion require specific confirmation.
 - `engineer` performs production work directly. Subagents are limited to exploration, research, and independent review.
 - Handoffs carry context, not permission.
@@ -36,7 +36,9 @@ Selecting a primary agent does not replace the model already stored on an existi
 
 These permissions are guardrails, not a sandbox.
 
-Broad shell access intentionally trades mechanical containment for fewer interruptions. It cannot reliably recognize every destructive command, production operation, Git alias, or indirect write. Confirmation for those actions is an agent instruction, not a complete command firewall. External-directory and sensitive-file checks may still request approval. Use a sandbox or a stricter consuming-project policy when hard isolation is required.
+The shared rules in `opencode.json` ask before ordinary forms of file deletion (`rm`, `rmdir`, `unlink`, `find -delete`), Git reset/clean/restore and force/discard checkout/switch, `sudo`/`doas`, recursive ownership/permission changes, disk formatting/writing, shutdown/reboot, and Docker/Podman removal/pruning/Compose teardown. Ordinary inspection, branch switching, nonrecursive `chmod`, and `docker run --rm` remain allowed. Git commit/push denials follow these rules. Do not add a broad agent-local shell allowance: agent rules run last and would erase these shared gates.
+
+These are command-pattern guardrails, not intent analysis. Some harmless variants (for example `git clean -n`) still ask. Indirect scripts, aliases, interpreters, alternate executable paths/options, and unlisted destructive commands can bypass the patterns. External writes and production access still require confirmation by agent instruction; they are not comprehensively recognized by the shell scanner. Broad shell access can also write files despite Sol's edit gate. External-directory and sensitive-file checks may still request approval. Use a sandbox or a stricter consuming-project policy when hard isolation is required.
 
 ## Code Mode and connected tools
 
@@ -106,7 +108,7 @@ cp -R "$repo/agents" "$repo/skills" "$h/.opencode/"
 git diff --check
 ```
 
-The permission check exercises the runtime evaluator, including ordinary shell allowance, edit boundaries, Code Mode, browser/web/MCP access, and Git denials. It creates local test sessions but never executes the command strings being checked. It does not prove shell-scanner coverage or actual tool success.
+The permission check exercises the runtime evaluator, including routine inspection allowance, destructive-command approval gates, edit boundaries, Code Mode, browser/web/MCP access, and Git denials. It creates local test sessions, rejects test approval requests, and never executes the command strings being checked. It does not prove shell-scanner coverage or actual tool success. Saved project-level approvals can suppress `ask` prompts; remove old broad shell approvals when checking this policy. Configured denials cannot be overridden by saved approvals.
 
 Also run a disposable `opencode2 run --agent engineer --model 'openai/gpt-6-astra#high' --format json` session in the temporary project without `--auto`: ask it to create a small fixture, verify it with Python, discover Context7 through `execute`, and resolve/query a public library. Test `researcher` with web search, an upstream fetch, and Context7; test `design` and `reviewer` discovery to confirm denied namespaces are absent. A Desktop-attached session is required to exercise the browser itself. Report authentication, provider, or browser-attachment blockers rather than treating catalog presence as successful execution.
 

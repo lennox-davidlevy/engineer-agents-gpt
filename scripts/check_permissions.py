@@ -10,6 +10,41 @@ import pathlib
 import subprocess
 
 
+# Permission resources only: these strings are never passed to a shell.
+DESTRUCTIVE_COMMANDS = (
+    "rm -rf scratch", "rm -fr scratch", "rm file.txt", "/bin/rm -rf scratch",
+    "rmdir scratch", "/bin/rmdir scratch", "unlink file.txt",
+    "find scratch -type f -delete",
+    "git reset --hard HEAD", "git reset HEAD~1", "git clean -fd",
+    "git restore file.txt", "git checkout -- file.txt", "git checkout HEAD -- file.txt",
+    "git checkout -f main", "git checkout --force main",
+    "git switch -f main", "git switch --discard-changes main",
+    "git checkout main -f", "git checkout main --force",
+    "git switch --force main", "git switch main -f", "git switch main --force",
+    "sudo true", "doas true",
+    "chmod -R 777 scratch", "chmod -vR 777 scratch", "chmod --recursive 777 scratch",
+    "chown -R nobody scratch", "chown --recursive nobody scratch",
+    "chgrp -R staff scratch", "chgrp --recursive staff scratch",
+    "dd if=/dev/zero of=disk.img", "mkfs.ext4 disk.img",
+    "diskutil eraseDisk APFS test disk9", "diskutil partitionDisk disk9 GPT APFS test 100%",
+    "shutdown -h now", "reboot",
+    "docker rm test", "docker rmi test", "docker volume rm data",
+    "docker system prune", "docker compose down", "docker compose -p test down -v",
+    "docker-compose down", "podman rm test", "podman rmi test",
+    "podman volume rm data", "podman system prune", "podman compose down",
+)
+
+INSPECTION_COMMANDS = (
+    "set -eu", "ls -l dev/bob", "readlink dev/bob", "realpath dev/bob",
+    "dev/bob --version", "node -e \"console.log('metadata')\"",
+    "find dev -maxdepth 3 -type f -o -type l", "sed -n '1,120p'",
+    "git diff", "git log -1", "git checkout feature", "git switch feature",
+    "git checkout bug-fix", "git switch feature/add-filter",
+    "chmod +x script.sh", "docker ps", "docker run --rm example-test-image",
+    "podman run --rm example-test-image",
+)
+
+
 def api(method, path, body):
     result = subprocess.run(
         ["opencode2", "api", method, path, "--data", json.dumps(body)],
@@ -33,7 +68,8 @@ def main():
             ("webfetch", "https://react.dev/reference/react/useState", "allow" if agent in ("engineer", "design", "researcher") else "deny"),
             ("context7_query-docs", "*", "allow" if agent in ("engineer", "researcher") else "deny"),
             ("context7_resolve-library-id", "*", "allow" if agent in ("engineer", "researcher") else "deny"),
-            ("shell", "python3 -c 'print(1)'", "allow" if agent == "engineer" else "ask" if agent == "design" else "deny"),
+            ("shell", "python3 -c 'print(1)'", "allow" if agent in ("engineer", "design") else "deny"),
+            ("shell", "set -eu\nBOB='dev/bob/bin/bob'\nls -l \"$BOB\"; readlink \"$BOB\" || true; realpath \"$BOB\"; \"$BOB\" --version\nnode -e \"console.log('metadata')\"\nfind dev -maxdepth 3 -type f -o -type l | sed -n '1,120p'", "allow" if agent in ("engineer", "design") else "deny"),
             ("edit", "smoke-check.txt", "allow" if agent == "engineer" else "ask" if agent == "design" else "deny"),
             ("shell", "git status --short", "deny" if agent == "researcher" else "allow"),
             ("shell", "git commit", "deny"),
@@ -43,6 +79,10 @@ def main():
             ("subagent", "general", "deny"),
             ("skill", "unknown-skill", "deny"),
         ]
+        cases.extend(("shell", command, "ask" if agent in ("engineer", "design") else "deny")
+                     for command in DESTRUCTIVE_COMMANDS)
+        if agent in ("engineer", "design"):
+            cases.extend(("shell", command, "allow") for command in INSPECTION_COMMANDS)
         for action, resource, expected in cases:
             result = api("post", f"/api/session/{session['id']}/permission", {
                 "agent": agent, "action": action, "resources": [resource],
