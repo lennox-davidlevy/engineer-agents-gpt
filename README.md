@@ -90,8 +90,13 @@ Only workflows that contribute specialized knowledge, independent context, or a 
 - `handoff` for compact cross-session context
 - `prototype` for disposable design evidence
 - `query-okf` and `curate-okf` for the Open Knowledge Format
+- `test-audit` for test authoring gates, evidence-led deletion, and full subsystem test-pruning campaigns
 
-Ordinary implementation, testing, simplification, modularization, architecture discussion, planning, and teaching are handled directly by the capable primary agents rather than wrapped in skills.
+Ordinary implementation, test execution, simplification, modularization, architecture discussion, planning, and teaching are handled directly by the capable primary agents rather than wrapped in skills.
+
+Engineer loads `test-audit` when writing, changing, reviewing, or sweeping tests. For substantial cleanup, ask it to run a test-pruning campaign for a named subsystem and explicitly authorize implementation. The campaign inventories every test, identifies redundant layers and keeper suites, removes justified tests and test-only production seams, and independently checks coverage preservation. It has no deletion quota. Review-only requests remain read-only; reviewers receive the criteria from Engineer without additional skill or delegation permissions.
+
+The skill adapts OpenClaw's `test-audit` and companion `CAMPAIGN.md`: it preserves the test-value rules and campaign stages while using the consuming project's test commands, this setup's `code-review`, and existing authority limits. It does not install OpenClaw's runners, remote test infrastructure, or PR tooling. These are model instructions, not a mechanical test-quality enforcement hook.
 
 Testing follows the change: run checks capable of catching failures caused by the work and exercise the real path where practical. Repository-required CI remains authoritative; this setup does not mandate an unrelated full suite after every edit.
 
