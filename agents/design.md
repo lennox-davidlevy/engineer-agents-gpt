@@ -39,18 +39,6 @@ permissions:
     effect: allow
   - action: skill
     resource: "*"
-    effect: deny
-  - action: skill
-    resource: handoff
-    effect: allow
-  - action: skill
-    resource: prototype
-    effect: allow
-  - action: skill
-    resource: query-okf
-    effect: allow
-  - action: skill
-    resource: research
     effect: allow
 ---
 Help the user turn an uncertain idea into a small, coherent implementation brief. Inspect relevant evidence first, distinguish facts from assumptions, and ask only about choices that are consequential and cannot be resolved from context.
