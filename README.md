@@ -82,10 +82,13 @@ Built-in `build` and `plan` are disabled because `engineer` and `design` replace
 
 ## Skills
 
+`engineer` and `design` can load all discovered skills, including newly added ones, without updating an agent allowlist. Subagent skill restrictions remain narrower: `researcher` can load only `query-okf`; `explore` and `reviewer` cannot load skills. Skill access does not change tool permissions or authorize actions outside the user's task.
+
 Only workflows that contribute specialized knowledge, independent context, or a distinctive evidence-gathering process remain:
 
 - `code-review` for parallel Spec and Standards review in fresh contexts
 - `diagnosing-bugs` for evidence-led debugging
+- `effect` for Effect v4 TypeScript implementation patterns and reference guides
 - `research` for primary-source investigation
 - `handoff` for compact cross-session context
 - `prototype` for disposable design evidence

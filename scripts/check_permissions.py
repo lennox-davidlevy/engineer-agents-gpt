@@ -82,7 +82,9 @@ def main():
             ("shell", "git push", "deny"),
             ("shell", "git push origin HEAD", "deny"),
             ("subagent", "general", "deny"),
-            ("skill", "unknown-skill", "deny"),
+            ("skill", "unknown-skill", "allow" if agent in ("engineer", "design") else "deny"),
+            ("skill", "effect", "allow" if agent in ("engineer", "design") else "deny"),
+            ("skill", "query-okf", "allow" if agent in ("engineer", "design", "researcher") else "deny"),
         ]
         cases.extend(("shell", command, "ask" if agent in ("engineer", "design") else "deny")
                      for command in DESTRUCTIVE_COMMANDS)

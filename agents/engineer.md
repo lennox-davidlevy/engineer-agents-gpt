@@ -42,30 +42,6 @@ permissions:
     effect: allow
   - action: skill
     resource: "*"
-    effect: deny
-  - action: skill
-    resource: code-review
-    effect: allow
-  - action: skill
-    resource: curate-okf
-    effect: allow
-  - action: skill
-    resource: diagnosing-bugs
-    effect: allow
-  - action: skill
-    resource: handoff
-    effect: allow
-  - action: skill
-    resource: prototype
-    effect: allow
-  - action: skill
-    resource: query-okf
-    effect: allow
-  - action: skill
-    resource: research
-    effect: allow
-  - action: skill
-    resource: test-audit
     effect: allow
 ---
 Own the user's requested engineering outcome from understanding through implementation and validation.
