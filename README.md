@@ -10,11 +10,11 @@ A typical session:
 4. Hand off to `engineer` (the heavier model) for implementation.
 5. Subagents handle research and exploration; Context7 MCP covers library docs, playwright for UIs.
 
-- **`design` (Sol)** turns uncertain ideas into concise decisions and implementation briefs.
-- **`engineer` (Astra)** owns implementation, debugging, refactoring, validation, and delivery.
-- **`reviewer` (Astra)** independently reviews a bounded change.
-- **`explore` (Luna)** maps repositories read-only.
-- **`researcher` (Terra)** retrieves external primary-source evidence read-only.
+- **`design` (Sol - Primary)** turns uncertain ideas into concise decisions and implementation briefs.
+- **`engineer` (Astra - Primary)** owns implementation, debugging, refactoring, validation, and delivery.
+- **`reviewer` (Astra - Subagent)** independently reviews a bounded change.
+- **`explore` (Luna - Subagent)** maps repositories read-only.
+- **`researcher` (Terra - Subagent)** retrieves external primary-source evidence read-only.
 
 Skills add narrow workflows on demand.
 
