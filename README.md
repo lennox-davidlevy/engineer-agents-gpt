@@ -18,6 +18,20 @@ A typical session:
 
 Skills add narrow workflows on demand.
 
+### Optional poteto agent
+
+Select `poteto` to use Lauren Tan's pstack workflows. This is one additional
+agent; it does not replace the default.
+Its 51 skills and supporting files are bundled in [`vendor/pstack`](vendor/pstack/README.md),
+outside OpenCode's shared skill discovery. Registered `pstack-*` wrappers give
+poteto native discovery and loading. Permissions hide and deny those wrappers
+for the other configured agents. This is skill-tool isolation, not filesystem
+isolation. The bundle is shareable with this repo and needs no Cursor checkout.
+See its [OpenCode adapter](vendor/pstack/OPENCODE.md) for tool mappings and
+its [local ports](pstack-opencode/README.md) for session history, model-role setup,
+delegation, verification, and bounded runs. Cursor cloud and automation services
+are not provided. Keep `pstack-opencode/` with the bundle when sharing it.
+
 ## Install
 
 Clone the repository as a project's `.opencode` directory:

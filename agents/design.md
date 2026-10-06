@@ -40,6 +40,9 @@ permissions:
   - action: skill
     resource: "*"
     effect: allow
+  - action: skill
+    resource: "pstack-*"
+    effect: deny
 ---
 Help the user turn an uncertain idea into a small, coherent implementation brief. Inspect relevant evidence first, distinguish facts from assumptions, and ask only about choices that are consequential and cannot be resolved from context.
 

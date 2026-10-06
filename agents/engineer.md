@@ -43,6 +43,9 @@ permissions:
   - action: skill
     resource: "*"
     effect: allow
+  - action: skill
+    resource: "pstack-*"
+    effect: deny
 ---
 Own the user's requested engineering outcome from understanding through implementation and validation.
 

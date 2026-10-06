@@ -1,0 +1,21 @@
+{
+  "poteto-mode": ["README.md", "history.md", "models.md", "delegation.md", "verification.md", "local-runs.md"],
+  "poteto-help": ["README.md"],
+  "setup-pstack": ["README.md", "models.md"],
+  "recall": ["README.md", "history.md"],
+  "automate-me": ["README.md", "history.md", "verification.md"],
+  "correct": ["README.md", "history.md"],
+  "reflect": ["README.md", "history.md", "models.md", "delegation.md"],
+  "show-me-your-work": ["README.md", "history.md", "local-runs.md"],
+  "how": ["models.md", "delegation.md"],
+  "why": ["models.md", "delegation.md"],
+  "teach": ["models.md", "delegation.md"],
+  "architect": ["models.md", "delegation.md"],
+  "arena": ["models.md", "delegation.md", "local-runs.md"],
+  "swarm": ["models.md", "delegation.md", "local-runs.md"],
+  "interrogate": ["models.md", "delegation.md"],
+  "no-comments": ["delegation.md"],
+  "create-verification-skill": ["verification.md"],
+  "maintain-verification-skill": ["delegation.md", "verification.md"],
+  "figure-it-out": ["local-runs.md"]
+}
