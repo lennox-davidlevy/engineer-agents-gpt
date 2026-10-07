@@ -1,16 +1,18 @@
 ---
 name: pstack-principle-experience-first
 description: "Apply when product, UX, or feature-scope tradeoffs come up. Choose user delight over implementation convenience; ship fewer polished features over more rough ones."
-metadata:
-  opencode/autoinvoke: true
 ---
 
-Resolve this skill's base directory through symlinks with `realpath` if needed.
-From that resolved directory, the pstack root is `../../vendor/pstack`.
-Read `OPENCODE.md` at that root first. It overrides Cursor-specific instructions.
-Then read `skills/principle-experience-first/SKILL.md` at that root in full. Follow it subject to
-the OpenCode adapter and native port instructions above, which take precedence.
-Resolve the original skill's references and scripts relative to its directory,
-not this wrapper. Load other pstack skills through their `pstack-<name>` IDs.
-Do not replace the original instructions with this entry point. If the bundle
-is missing, report the installation problem instead of using another skill.
+# Experience First
+
+When implementation convenience conflicts with user delight, choose delight.
+
+- Every feature, control, and option must be justified
+- Ship less, ship better (polished experience with three features beats rough one with ten)
+- Prototype before committing (design decisions are cheaper in throwaway HTML than production code)
+- Get the details right (transitions, alignment, spacing, feedback, error states)
+- Tighten the core loop (every feature should serve the central workflow or get out of the way)
+
+The user is whoever consumes the work. For a UI that is the end user. For a library or an internal API it is the colleague who imports it. The engineer who maintains the code next is a user too. Weigh their experience the same way, and explain impact from their perspective.
+
+Foundations should serve the experience. Foundational thinking governs the *sequence* of work. This principle governs the *target*.

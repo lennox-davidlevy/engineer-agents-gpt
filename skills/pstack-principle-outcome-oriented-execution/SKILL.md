@@ -1,16 +1,20 @@
 ---
 name: pstack-principle-outcome-oriented-execution
 description: "Apply during planned rewrites and migrations with explicit phase boundaries. Converge on the target architecture; don't preserve smooth intermediate states with throwaway compatibility code."
-metadata:
-  opencode/autoinvoke: true
 ---
 
-Resolve this skill's base directory through symlinks with `realpath` if needed.
-From that resolved directory, the pstack root is `../../vendor/pstack`.
-Read `OPENCODE.md` at that root first. It overrides Cursor-specific instructions.
-Then read `skills/principle-outcome-oriented-execution/SKILL.md` at that root in full. Follow it subject to
-the OpenCode adapter and native port instructions above, which take precedence.
-Resolve the original skill's references and scripts relative to its directory,
-not this wrapper. Load other pstack skills through their `pstack-<name>` IDs.
-Do not replace the original instructions with this entry point. If the bundle
-is missing, report the installation problem instead of using another skill.
+# Outcome-Oriented Execution
+
+Optimize for the intended, verifiable end state rather than preserving smooth intermediate states.
+
+**Why:** Keeping every intermediate step fully stable often creates temporary compatibility code that becomes long-lived debt. Converge on the target architecture and prove correctness at explicit verification boundaries.
+
+**Core rule:**
+- Prioritize end-state integrity over transitional stability
+- Intermediate breakage is acceptable when it is planned, scoped, and reversible
+
+**Guardrails:**
+- Use this for planned rewrites and migrations with explicit phase boundaries
+- Declare where temporary breakage is acceptable
+- Keep high-signal checks for actively touched areas while migrating
+- Require full static and runtime verification at plan completion

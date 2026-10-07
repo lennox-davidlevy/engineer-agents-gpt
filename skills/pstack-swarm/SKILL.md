@@ -1,19 +1,49 @@
 ---
 name: pstack-swarm
-description: "Fan out N parallel workers, drain them, and return one report. Use for /swarm, 'swarm this', or parallel coverage, races, gauntlets, and exploration."
-metadata:
-  opencode/autoinvoke: true
+description: "Fan out N parallel workers, drain them, and return one report. Use for @pstack-swarm, 'swarm this', or parallel coverage, races, gauntlets, and exploration."
 ---
 
-Resolve this skill's base directory through symlinks with `realpath` if needed.
-From that resolved directory, the pstack root is `../../vendor/pstack`.
-Read `OPENCODE.md` at that root first. It overrides Cursor-specific instructions.
-Read `../../pstack-opencode/models.md` from this resolved wrapper directory.
-Read `../../pstack-opencode/delegation.md` from this resolved wrapper directory.
-Read `../../pstack-opencode/local-runs.md` from this resolved wrapper directory.
-Then read `skills/swarm/SKILL.md` at that root in full. Follow it subject to
-the OpenCode adapter and native port instructions above, which take precedence.
-Resolve the original skill's references and scripts relative to its directory,
-not this wrapper. Load other pstack skills through their `pstack-<name>` IDs.
-Do not replace the original instructions with this entry point. If the bundle
-is missing, report the installation problem instead of using another skill.
+# Swarm
+
+For the relevant task, read [delegation](../pstack-poteto-mode/references/delegation.md), [local-runs](../pstack-poteto-mode/references/local-runs.md). These procedures define the OpenCode execution steps.
+
+
+Fan out N parallel read-only workers. They may cover separate slices, race the same brief, or mix both. The parent waits, aggregates, and returns one report.
+
+## Start
+
+Open a todolist with one entry per phase before launching anything.
+
+1. Frame
+2. Fan out
+3. Aggregate
+4. Report
+
+## Phase A: Frame
+
+1. State the done predicate and the artifact or report the swarm must return.
+2. Choose the shape. Partition into slices, race N workers on identical briefs, or mix both. For a race or mixed shape, declare `first pass`, `rank all`, or `best-of` before spawning.
+3. Set N from the user or derive it from the shape. N is the total read-only worker count.
+4. Omit `model` unless the user explicitly selected a model or comparison. Discover exact provider/model IDs through OpenCode and use only approved choices. Report actual models, not assumed diversity.
+5. Each worker returns a report rather than editing. Verification briefs name exact revisions and methods. Poteto owns any required commands or writes that the delegate cannot perform.
+
+## Phase B: Fan out
+
+Use `subagent` with a permitted read-only `agent` and `background: true` for
+independent work. There is no cloud environment or cloud-base-branch option.
+If a check requires machine isolation, report that prerequisite as blocked.
+Wait for completion notifications rather than polling.
+
+Every brief stands alone. Include the goal, scope, exact slice or race arm, how to verify, and what to report. Reports use `PASS`, `ISSUES`, or `BLOCKED` with evidence. A worker that can prove a defect reports `ISSUES` and lists every issue it can prove, not only the first.
+
+If a worker drops out, proceed with N-1 and note it.
+
+## Phase C: Aggregate
+
+Read the terminal results. Drop a result that does not record the SHAs and method its brief names, and respawn that worker once. After a second miss, record a gap. A gap does not count as a pass. For coverage, every required slice needs a result. For a race, apply the selection rule declared up front. Use first pass, rank all, or best-of. Do not paste raw worker dumps.
+
+Keep a compact result table, one-line evidenced issues, and explicit gaps or dropouts.
+
+## Phase D: Report
+
+Return one consolidated in-chat report with the table, issue one-liners, gaps or dropouts, and the race rule when used.

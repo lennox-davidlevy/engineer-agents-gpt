@@ -22,15 +22,30 @@ Skills add narrow workflows on demand.
 
 Select `poteto` to use Lauren Tan's pstack workflows. This is one additional
 agent; it does not replace the default.
-Its 51 skills and supporting files are bundled in [`vendor/pstack`](vendor/pstack/README.md),
-outside OpenCode's shared skill discovery. Registered `pstack-*` wrappers give
-poteto native discovery and loading. Permissions hide and deny those wrappers
-for the other configured agents. This is skill-tool isolation, not filesystem
-isolation. The bundle is shareable with this repo and needs no Cursor checkout.
-See its [OpenCode adapter](vendor/pstack/OPENCODE.md) for tool mappings and
-its [local ports](pstack-opencode/README.md) for session history, model-role setup,
-delegation, verification, and bounded runs. Cursor cloud and automation services
-are not provided. Keep `pstack-opencode/` with the bundle when sharing it.
+Its 51 OpenCode-native skills live in `skills/pstack-*/`. Each `SKILL.md`
+contains the actual instructions, with references and scripts alongside it.
+OpenCode loads the body directly through the skill tool. There are no pointer
+wrappers or generation step. Edit these files directly.
+
+Permissions hide and deny `pstack-*` skills for the other configured agents.
+This restricts skill discovery and calls, not filesystem reads.
+The [poteto agent](agents/poteto.md) defines common tool and authority rules.
+Specialized procedures for history, model roles, delegation, verification, and
+bounded runs live under [poteto-mode references](skills/pstack-poteto-mode/references/).
+No Cursor checkout, cloud worker service, or unattended scheduler is required
+or provided. The skills derive from Lauren Tan's pstack and retain its
+[MIT license](skills/PSTACK-LICENSE). The starting source was
+[pstack 0.15.13](https://github.com/cursor/plugins/tree/e5a8186d7b43be8d6ac4452440fbead5f1a51c70/pstack).
+These are maintained OpenCode adaptations, not a synced copy of that source.
+
+The old `vendor/pstack/` snapshot is retained but unused. Removing it was blocked
+by the active agent's snapshot-protection rule during this migration.
+
+Validate the skill layout with `python3 scripts/check_pstack_skills.py`.
+From a fresh project containing this repo as `.opencode`, run
+`python3 .opencode/scripts/check_pstack_access.py` to check native registration
+and poteto-only access using the installed OpenCode V2 service. This creates
+local validation sessions but makes no model requests.
 
 ## Install
 

@@ -1,16 +1,23 @@
 ---
 name: pstack-principle-make-operations-idempotent
 description: "Apply when designing commands, lifecycle steps, or processing loops that run amid crashes, restarts, and retries. Converge to the same end state regardless of partial prior runs."
-metadata:
-  opencode/autoinvoke: true
 ---
 
-Resolve this skill's base directory through symlinks with `realpath` if needed.
-From that resolved directory, the pstack root is `../../vendor/pstack`.
-Read `OPENCODE.md` at that root first. It overrides Cursor-specific instructions.
-Then read `skills/principle-make-operations-idempotent/SKILL.md` at that root in full. Follow it subject to
-the OpenCode adapter and native port instructions above, which take precedence.
-Resolve the original skill's references and scripts relative to its directory,
-not this wrapper. Load other pstack skills through their `pstack-<name>` IDs.
-Do not replace the original instructions with this entry point. If the bundle
-is missing, report the installation problem instead of using another skill.
+# Make Operations Idempotent
+
+Design operations so they converge to the correct state regardless of how many times they run or where they start from. Every state-mutating operation should answer: "What happens if this runs twice? What happens if the previous run crashed halfway?"
+
+**Why:** Commands, lifecycle operations, and processing loops run where crashes, restarts, and retries are normal. If partial state changes the next run's outcome, every restart becomes a debugging session.
+
+**The pattern:**
+- Convergent startup: scan for existing state, clean stale artifacts, adopt live sessions
+- Content-based cleanup: compare by content equivalence, not creation order
+- Self-healing locks: use PID-based stale lock detection
+- Idempotent scheduling: failed work respawns cleanly, fresh input regenerated after each cycle
+
+**The test:**
+1. What happens if this runs twice in a row?
+2. What happens if the previous run crashed at every possible point?
+3. Does re-execution converge to the same end state?
+
+If any answer is "it depends on what state was left behind," the operation needs a reconciliation step.

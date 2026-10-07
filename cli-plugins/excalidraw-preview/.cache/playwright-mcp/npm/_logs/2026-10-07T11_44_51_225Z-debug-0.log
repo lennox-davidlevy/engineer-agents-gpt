@@ -1,0 +1,22 @@
+0 verbose cli /usr/bin/node-22 /usr/lib/node_modules_22/npm/bin/npm-cli.js
+1 info using npm@10.9.3
+2 info using node@v22.18.0
+3 silly config load:file:/usr/lib/node_modules_22/npm/npmrc
+4 silly config load:file:/home/david/Projects/github/engineer-agents-gpt/.npmrc
+5 silly config load:file:/home/david/.npmrc
+6 silly config load:file:/etc/npmrc
+7 verbose title npm exec @playwright/mcp@0.0.81 --browser chrome --headless --isolated --sandbox --output-dir .cache/playwright-mcp/output
+8 verbose argv "exec" "--yes" "--cache" ".cache/playwright-mcp/npm" "--" "@playwright/mcp@0.0.81" "--browser" "chrome" "--headless" "--isolated" "--sandbox" "--output-dir" ".cache/playwright-mcp/output"
+9 verbose logfile logs-max:10 dir:/home/david/Projects/github/engineer-agents-gpt/cli-plugins/excalidraw-preview/.cache/playwright-mcp/npm/_logs/2026-10-07T11_44_51_225Z-
+10 verbose logfile /home/david/Projects/github/engineer-agents-gpt/cli-plugins/excalidraw-preview/.cache/playwright-mcp/npm/_logs/2026-10-07T11_44_51_225Z-debug-0.log
+11 silly logfile done cleaning log files
+12 silly packumentCache heap:4345298944 maxSize:1086324736 maxEntrySize:543162368
+13 http fetch GET 200 https://registry.npmjs.org/@playwright%2fmcp 513ms (cache revalidated)
+14 silly packumentCache heap:4345298944 maxSize:1086324736 maxEntrySize:543162368
+15 silly packumentCache heap:4345298944 maxSize:1086324736 maxEntrySize:543162368
+16 verbose cwd /home/david/Projects/github/engineer-agents-gpt/cli-plugins/excalidraw-preview
+17 verbose os Linux 6.16.4-200.fc42.x86_64
+18 verbose node v22.18.0
+19 verbose npm  v10.9.3
+20 verbose exit 0
+21 info ok

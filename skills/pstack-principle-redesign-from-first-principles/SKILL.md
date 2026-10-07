@@ -1,16 +1,15 @@
 ---
 name: pstack-principle-redesign-from-first-principles
 description: "Apply when integrating a new requirement into an existing design. Redesign as if the requirement had been a foundational assumption from day one, instead of bolting it on."
-metadata:
-  opencode/autoinvoke: true
 ---
 
-Resolve this skill's base directory through symlinks with `realpath` if needed.
-From that resolved directory, the pstack root is `../../vendor/pstack`.
-Read `OPENCODE.md` at that root first. It overrides Cursor-specific instructions.
-Then read `skills/principle-redesign-from-first-principles/SKILL.md` at that root in full. Follow it subject to
-the OpenCode adapter and native port instructions above, which take precedence.
-Resolve the original skill's references and scripts relative to its directory,
-not this wrapper. Load other pstack skills through their `pstack-<name>` IDs.
-Do not replace the original instructions with this entry point. If the bundle
-is missing, report the installation problem instead of using another skill.
+# Redesign From First Principles
+
+When integrating a change, don't bolt it onto the existing design. Redesign as if the requirement had been there from the start.
+
+- Read all affected files and understand the current design
+- Ask: "if we were writing this from scratch with this new requirement, what would we build?"
+- Propagate the change through every reference: types, docs, examples, rationale sections
+- Think about the whole redesign, then deliver it incrementally
+
+This is the method for preserving option value when integrating changes into an existing design.
