@@ -20,10 +20,14 @@ for the requested content.
 - For an underspecified short explainer, aim for 15–30 seconds with readable
   captions and no generated narration. State these assumptions briefly and
   proceed; ask only when the subject or a material requirement is unclear.
-- Create scene sources, plans, assets, build caches, and outputs in a new,
+- Create scene sources, plans, assets, and outputs in a new,
   uniquely named `docs/videos/<slug>/` directory under the active repository
   root, unless the user specifies another location. Keep paths absolute when
   crossing working directories. Do not overwrite past work.
+- Share build caches across videos at `<repo>/docs/videos/.cache/cargo-home/`
+  and `<repo>/docs/videos/.cache/target/`; never create new caches per video.
+  A custom delivery location does not change this cache location unless the user
+  explicitly requests it. Keep the cache gitignored even when delivery is tracked.
 - Before generating files, ensure `/docs/videos/` is ignored by the repository's
   root `.gitignore`, adding the rule only if needed and preserving existing rules.
   Verify the actual destination with `git check-ignore`; existing negation rules
@@ -40,22 +44,42 @@ for the requested content.
 
 Check the checkout's `README.md`, `Cargo.toml`, and relevant crate manifests.
 Check `cargo --version`, `rustc --version`, `ffmpeg -version`, `ffprobe -version`,
-and `ffmpeg -hide_banner -encoders` for `libx264` and `aac`. Check for an existing
-`psychopomp` executable and `<checkout>/target/release/psychopomp`; use `--help`
-to confirm commands rather than assuming the binary matches the checkout.
+and `ffmpeg -hide_banner -encoders` for `libx264` and `aac`.
 
-No global installation or PATH entry is required: invoke the renderer by its
-absolute path. If no usable binary exists, build the
-checkout with project-local caches (set absolute `CARGO_HOME` and
-`CARGO_TARGET_DIR` under the video's work directory), using:
+On every invocation, resolve the active repository root as `REPO_ROOT`, ensure
+`docs/videos/.cache/` is ignored, and set these absolute paths for **every** Cargo
+command (exports must be repeated if shell calls do not retain their environment):
+
+```sh
+export CARGO_HOME="$REPO_ROOT/docs/videos/.cache/cargo-home"
+export CARGO_TARGET_DIR="$REPO_ROOT/docs/videos/.cache/target"
+```
+
+Look first for `$CARGO_TARGET_DIR/release/psychopomp`. If absent, check existing
+`docs/videos/*/target/release/psychopomp` binaries from earlier versions of this
+skill, then `<checkout>/target/release/psychopomp` and PATH. Use
+`"$RENDERER" plan schema` to check usability after setting `RENDERER` to the
+candidate's absolute path; this does not prove that a binary matches the current
+checkout. Never probe this CLI with `--help`: top-level `psychopomp --help`
+treats it as an output filename and renders a video named `--help`, while plan
+subcommands can treat it as an input path rather than a help flag. Read the
+checkout's documentation and CLI source for supported commands and flags. Reuse a
+compatible existing renderer by absolute path as `RENDERER`; do not move/delete
+old video directories or caches just to adopt this layout.
+
+No global installation or PATH entry is required. If no usable renderer exists,
+or the checkout changed and the renderer's compatibility is uncertain, build
+against the current checkout using the shared caches:
 
 ```sh
 cargo build --release --locked --manifest-path "$PSYCHOPOMP/Cargo.toml" -p psychopomp-render --bin psychopomp
 ```
 
-Then use `$CARGO_TARGET_DIR/release/psychopomp` as `RENDERER`. First builds may
+After a successful build, use `$CARGO_TARGET_DIR/release/psychopomp` as `RENDERER`.
+Subsequent videos must check this same path before building. First builds may
 take significant time and disk space; compact delivery does not mean compact
-Rust build caches. Keep caches across subsequent invocations when practical.
+Rust build caches. Retain the shared caches across invocations; Cargo can reuse
+them for incremental rebuilds when the checkout changes.
 If the toolchain is too old or GPU/Metal initialization fails, report the exact
 prerequisite and ask before installing/upgrading tools. Do not claim readiness
 from the presence of Cargo alone, or silently fall back to a different engine.
@@ -84,7 +108,8 @@ project's workspace, and absolute path dependencies on the required Psychopomp
 crates. Inspect copied code for workspace-relative asset paths and output paths;
 resolve engine assets against the checkout and write new artifacts only into the
 video directory. Never run an example unchanged if it writes into the checkout.
-Reuse the project-local Cargo caches for this crate.
+Reuse the same shared `CARGO_HOME` and `CARGO_TARGET_DIR` for this crate; only
+scene sources and video-specific artifacts belong in the per-video directory.
 
 Emit a Scene Plan with explicit output paths. Validate and inspect it:
 
