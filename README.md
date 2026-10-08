@@ -66,5 +66,6 @@ Useful skills, some from [Matt Pocock](https://github.com/mattpocock/skills), [K
 - `research` for primary-source investigation
 - `handoff` for compact cross-session context
 - `prototype` for disposable design evidence
+- `psychopomp-video` for creating videos with the local Psychopomp checkout, compressing them to small MP4s, and opening them for playback (default: 720p30, 10 MB target)
 - `query-okf` and `curate-okf` for the Open Knowledge Format
 - `test-audit` for test authoring gates, evidence-led deletion, and full subsystem test-pruning campaigns
