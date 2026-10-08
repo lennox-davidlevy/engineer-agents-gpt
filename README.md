@@ -62,6 +62,7 @@ Useful skills, some from [Matt Pocock](https://github.com/mattpocock/skills), [K
 - `code-review` for parallel Spec and Standards review in fresh contexts
 - `diagnosing-bugs` for evidence-led debugging
 - `effect` for Effect v4 TypeScript implementation patterns and reference guides
+- `good-css` for modern CSS patterns across stylesheets, utility classes, and CSS-in-JS, with focused reference guides
 - `research` for primary-source investigation
 - `handoff` for compact cross-session context
 - `prototype` for disposable design evidence
