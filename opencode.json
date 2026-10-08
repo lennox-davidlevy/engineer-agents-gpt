@@ -8,6 +8,7 @@
     { "action": "websearch", "resource": "*", "effect": "deny" },
     { "action": "webfetch", "resource": "*", "effect": "deny" },
     { "action": "context7_*", "resource": "*", "effect": "deny" },
+    { "action": "excalidraw_*", "resource": "*", "effect": "deny" },
     { "action": "shell", "resource": "*", "effect": "allow" },
     { "action": "shell", "resource": "rm *", "effect": "ask" },
     { "action": "shell", "resource": "*/rm *", "effect": "ask" },
@@ -59,6 +60,16 @@
   "websearch": { "provider": "random" },
   "mcp": {
     "servers": {
+      "excalidraw": {
+        "type": "local",
+        "command": ["node", ".opencode/skills/excalidraw/scripts/start.mjs"],
+        "environment": {
+          "EXPRESS_SERVER_URL": "http://127.0.0.1:3210",
+          "LOG_FILE_PATH": ".cache/excalidraw/server.log"
+        },
+        "codemode": true,
+        "timeout": { "startup": 120000, "execution": 60000 }
+      },
       "playwright": {
         "type": "local",
         "command": ["npx", "--yes", "--cache", ".cache/playwright-mcp/npm", "@playwright/mcp@0.0.81", "--browser", "chrome", "--headless", "--isolated", "--sandbox", "--output-dir", ".cache/playwright-mcp/output"],

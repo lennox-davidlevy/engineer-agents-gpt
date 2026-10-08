@@ -5,5 +5,6 @@ package.json
 package-lock.json
 __pycache__/
 .cache/playwright-mcp/
+.cache/excalidraw/
 
 /AGENTS.md

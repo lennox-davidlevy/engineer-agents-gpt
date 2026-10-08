@@ -19,6 +19,18 @@ permissions:
   - action: webfetch
     resource: "*"
     effect: allow
+  - action: excalidraw_*
+    resource: "*"
+    effect: allow
+  - action: excalidraw_export_to_excalidraw_url
+    resource: "*"
+    effect: ask
+  - action: excalidraw_clear_canvas
+    resource: "*"
+    effect: ask
+  - action: excalidraw_restore_snapshot
+    resource: "*"
+    effect: ask
   - action: edit
     resource: "*"
     effect: ask
