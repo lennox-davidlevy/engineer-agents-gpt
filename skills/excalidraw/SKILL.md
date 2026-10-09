@@ -11,6 +11,21 @@ or install a second diagram framework. The package includes the local web editor
 This is open-ended: architecture, flows, alternatives, sketches, and revisions
 are all valid. Do not force a fixed architecture template or elaborate ceremony.
 
+## Required style: Camenae
+
+Before creating, restyling, or rendering a diagram, read
+`references/camenae-theme.md`. Use Camenae for all generated diagrams and exports
+unless the user explicitly requests another theme. Its styling rules override
+the upstream diagram guide's aesthetic defaults. Default to Light mode on the
+Stone `#e6dfd2` canvas, not a black background; use the reference's semantic
+palette, fonts, sharp corners, and restrained emphasis.
+
+Follow the reference's native-file and browser-render delivery path: the current
+MCP does not preserve all scene settings/fonts through ordinary export/import.
+Verify the live editor, editable file, and final image agree. Do not claim theme
+fidelity merely because shape colors were set, or silently approximate unsupported
+settings. No additional theme framework or renderer patch is needed.
+
 ## Connect and preserve existing work
 
 - Use the configured launcher (`scripts/start.mjs` beside this skill). It installs
@@ -67,13 +82,16 @@ browser automation just to draw shapes.
    If Code Mode does not expose the image visually, export a PNG inside the active
    repository and read it with the image tool. Fix clipping, overlaps, illegible
    text, and misleading arrows. Stop once the diagram communicates the requested
-   idea; do not pursue decorative perfection.
+   idea; do not pursue decorative perfection. Headless previews are preliminary;
+   use the theme reference's browser-render path for faithful final images.
 2. Export an editable scene with `export_scene` to
    `docs/diagrams/<descriptive-name>.excalidraw` in the active repository, unless
    the user specifies another destination. Create parent directories first.
    Use a fresh filename for new diagrams, or update a file only when requested.
    Verify the exported file exists, parses as Excalidraw JSON, and contains the
-   expected elements. A PNG alone is not the editable deliverable.
+   expected elements. Finalize its Camenae styling and scene state as described
+   in the reference before loading it into the native editor. A PNG alone is not
+   the editable deliverable.
 3. Diagram files are ordinary documentation; do not automatically gitignore them.
    Respect the user's tracking preference. Runtime downloads, logs, and state go
    under `.cache/excalidraw/`; ensure that directory is ignored in the consuming
@@ -83,6 +101,8 @@ browser automation just to draw shapes.
    Opening the completed diagram is part of a diagram-creation request unless
    the user opts out. Do not open an empty excalidraw.com page instead. If asked
    only to open an existing diagram, load it safely first; do not redraw it.
+   For Camenae delivery, verify Light mode and the Stone background in that editor;
+   a browser preference can differ from the file or automated preview.
 5. Provide the editable file path and local canvas URL. State accurately whether
    opening succeeded. Leave the canvas server running for the user to edit.
 
